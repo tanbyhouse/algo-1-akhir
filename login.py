@@ -4,53 +4,64 @@ import os
 def bersihkan_layar():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def selamat_datang():
+    print("""
+    ==========================================
+                SELAMAT DATANG   
+    ==========================================
+    """)
+
 def login():
     while True:
+        bersihkan_layar()
+        selamat_datang()
         print("""
-        ============================
-        Selamat datang di Program Login
-        ============================
         Pilih login sebagai:
         1. Admin
         2. Pembeli
         3. Keluar
         """)
-
+        
         pilihan = input("Pilih opsi (1/2/3): ")
 
         if pilihan == '1':
-            role = "admin"
+            peran = "admin"
         elif pilihan == '2':
-            role = "pembeli"
+            peran = "pembeli"
         elif pilihan == '3':
-            print("Terima kasih, sampai jumpa lagi!")
+            print("Terima kasih")
             break
         else:
-            print("Pilihan tidak valid. Coba lagi.")
+            print("Pilihan tidak valid. Silakan coba lagi.")
+            input("Tekan Enter untuk melanjutkan...")
             continue
 
+ 
         try:
-            users = pd.read_csv("users.csv")  
-            print(f"Login sebagai {role}")
-
+            users = pd.read_csv("users.csv")
+            print(f"\nAnda memilih login sebagai {peran}.")
+            
             username = input("Masukkan username: ")
-            if username in users['username'].values:
-                barisuser = users[users['username'] == username]
+            password = input("Masukkan password: ")
 
-                password = input("Masukkan password: ")
-                if password == barisuser['password'].values[0]:
-                    if barisuser['role'].values[0] == role:
+            if username in users['username'].values:
+                data_user = users[users['username'] == username]
+
+                if password == data_user['password'].values[0]:
+                    if data_user['role'].values[0] == peran:
                         bersihkan_layar()
-                        print(f"Login berhasil sebagai {role}.")
+                        print(f"Login berhasil! Selamat datang, {username}.")
+                        input("Tekan Enter untuk melanjutkan...")
                     else:
-                        print(f"Login gagal! Anda bukan {role}.")
+                        print("Login gagal. Anda tidak memiliki akses sebagai", peran)
                 else:
-                    print("Password salah!")
+                    print("Password salah. Silakan coba lagi.")
             else:
-                print("Username tidak ditemukan!")
+                print("Username tidak ditemukan. Silakan coba lagi.")
+        
         except FileNotFoundError:
-            print("Error: File 'users.csv' tidak ditemukan.")
-        except Exception as e:
-            print(f"Terjadi kesalahan: {e}")
+            print("Error: File 'users.csv' tidak ditemukan. Pastikan file tersedia.")
+
+        input("Tekan Enter untuk kembali ke menu...")
 
 login()
