@@ -65,3 +65,4 @@ def login():
         input("Tekan Enter untuk kembali ke menu...")
 
 login()
+print(f'adam')
