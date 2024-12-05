@@ -64,28 +64,47 @@ def tambah_barang():
 
     print(f"Barang dengan ID {id_barang} berhasil ditambahkan!")
 
-def ubah_barang():
-    teks = "Ubah Barang"
-    print('=' * 30)
-    print(f"{teks:^30}")
-    print('=' * 30)
+def ubah_produk():
+    result = pyfiglet.figlet_format("Ubah Produk")
+    print(result)
     barang = []
-    id_ubah = input("Masukkan ID barang yang ingin diubah: ")
     
-    with open('produk.csv', 'r', newline='') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            barang.append(row)
+    try:
+        with open('produk.csv', 'r', newline='') as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            for row in csv_reader:
+                barang.append(row)
+    except FileNotFoundError:
+        print('File produk tidak ditemukan. Pastikan file sudah ada')
+        return
+    
+    teks = "Daftar Produk"
+    print()
+    print("="*30)
+    print(f"{teks:^30}")
+    print("="*30)
+    print()
+    print(tabulate(barang, headers='keys', tablefmt='fancy_grid', showindex=False))
+    
+    id_ubah = input("\nMasukkan ID barang yang ingin diubah: ")
     
     id_found = False
     
     for data in barang:
         if data['ID'] == id_ubah:
+            id_found = True
             data['Nama Barang'] = input("Masukkan nama barang baru: ")
-            data['Harga Barang (Rp)'] = input("Masukkan harga barang baru: ")
+            
+            while True:
+                harga_baru = input("Masukkan harga barang baru: ")
+                if harga_baru.isdigit():
+                    data['Harga Barang (Rp)'] = harga_baru
+                    break
+                else:
+                    print("Harga harus berupa angka! Silakan coba lagi.")
             break
     
-    if id_found:
+    if not id_found:
         print("ID tidak valid, cek daftar barang terlebih dahulu.")
     else:        
         with open('produk.csv', 'w', newline='') as csv_file:
@@ -94,6 +113,9 @@ def ubah_barang():
             writer.writeheader()
             writer.writerows(barang)
         print(f"Barang dengan ID {id_ubah} berhasil diubah!")
+    
+    input("Tekan enter untuk melanjutkan...")
+    menu_admin()
     
 def hapus_barang():
     teks = "Hapus Barang"
