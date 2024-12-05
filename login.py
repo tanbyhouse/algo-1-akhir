@@ -2,11 +2,6 @@ import pandas as pd
 import os
 import csv
 
-
-def bersihkan_layar():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-
 def selamat_datang():
     print("""
     ==========================================
