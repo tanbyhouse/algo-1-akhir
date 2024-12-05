@@ -9,10 +9,6 @@ def selamat_datang():
     ==========================================
     """)
 
-
-def selamat_datang():
-    print("=== Selamat Datang===")
-
 def register():
     try:
         if os.path.exists("users.csv"):
