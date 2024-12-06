@@ -111,6 +111,7 @@ def ubah_produk():
             break
     
     if not id_found:
+    if not id_found:
         print("ID tidak valid, cek daftar barang terlebih dahulu.")
         return
     
